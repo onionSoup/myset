@@ -17,10 +17,10 @@ end
 #使えないとは
   {:'1' => 1}を渡すと[:"1", 1]になってしまう。
 
-  ##したこと
+  ##binding.pryの場所
         it {
           binding.pry
-  ##出力
+  ##やったこととその出力
     pry(#<RSpec::ExampleGroups::MySet::Initialize::WhenInputIncludeRegexpArrayHash>)>
       expect({:'1' => 1}).to match_array [{:'1' => 1}]
 

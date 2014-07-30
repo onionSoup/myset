@@ -7,16 +7,24 @@ attr_accessor :inner_hash
     inner_hash = {}
 
     args.each do |arg|
+      #二分探索するために、ソートしたい。
+      #ソートをするために、全要素を文字列にしたい。
+      #1と '1'は一緒に集合（Set）の要素になれるので、keys = arg.to_sでは駄目。
       key = "#{arg.to_s}_#{arg.class}"
 
       inner_hash[key] = arg
     end
-     @inner_hash = inner_hash.sort.to_h
-     #まだ'10' < '2'問題と文字コード依存の比較が残っているので注意
-     #と思ったけど、これ直感に反していようが、このファイルで一貫したソートができれば
-     #二分探索するには十分かもしれない
+      #'10' < '2'になったり、文字コード依存の比較になったりする。
+      #ただ、これが直感に反していようが、このファイルで一貫したソートができれば
+      #二分探索するには十分。
+
+      #sortは後で自分で書き直す（できれば、Hash自体使わないように...）
+
+      @inner_hash = inner_hash.sort.to_h
   end
 
+  #Hash#has_value?を使わないために定義。
+  #もう少しいい書き方がある気がする。
   def binary_search(target, array)
     timeout(5){
       while(true)
@@ -43,7 +51,7 @@ attr_accessor :inner_hash
   def add(target)
     key = "#{target.to_s}_#{target.class}"
 
-    return @inner_hash if binary_search(key, @inner_hash.keys) == 'found' #Hash#has_value?を使わずにやる。
+    return @inner_hash if binary_search(key, @inner_hash.keys) == 'found'
 
     @inner_hash[key] = target
     @inner_hash = inner_hash.sort.to_h
